@@ -1,181 +1,115 @@
-# 🕳️ PotBot – AI-Powered Pothole Detection & Severity Estimation System  
-### *(Ongoing Project – Computer Vision + Stereo Depth + Geolocation + FastAPI Backend)*  
+# 🚧 PotBot – AI-Powered Pothole Detection Prototype (Ongoing)
+
+PotBot is an ongoing computer vision system designed to detect and analyze road potholes using **YOLO-based object detection**, **stereo vision depth estimation**, and **GPS-based geolocation tagging**. The long-term goal is to build a fully autonomous road-inspection device capable of mapping, reporting, and prioritizing pothole repair tasks for municipal authorities.
 
 ---
 
-## 🧩 **Project Architecture Overview**
-A high-level architecture diagram showing the complete planned pipeline can be viewed here:  
-📌 **Architecture Image:**  
-https://drive.google.com/file/d/1mWoFDJ442COOgtwaNZdPMP_I2RyniQRL/view?usp=drive_link  
+# 🧩 Project Architecture Overview
+
+Below is the complete end-to-end pipeline showing how detection, depth estimation, GPS tagging, and reporting integrate into a single automated system:
+
+![PotBot Architecture](https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/499813903-aa52fecf-c6e4-49fd-a77f-b189e25e06dd.png?raw=true)
 
 ---
 
-## 🎥 **Demo / Reference Output**
-You can watch the reference detection video here:  
-📌 **Output Video:**  
-https://drive.google.com/file/d/1ZVvBiK187UkO3EI_vcNbVqKvMKAh_wfU/view?usp=drive_link  
+# 🎥 Demo Output (Reference Video)
+
+A sample detection video from the current prototype stage:
+
+https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/pothole_output_simple.mp4
 
 ---
 
-## 🎯 **Project Overview**
+# 🧠 Project Description (Ongoing Work)
 
-PotBot is an **AI-driven pothole detection and severity analysis system** currently under development.  
-It uses **YOLO-based object detection**, **stereo-vision depth estimation**, and **GPS geolocation tagging** to automatically identify potholes on roads and forward structured reports to municipal authorities.
+PotBot aims to build an **AI-driven road monitoring system** capable of automatically detecting potholes, estimating their severity through geometric depth analysis, and tagging their exact GPS coordinates for municipal reporting.
 
-The goal is to build a **real-time, end-to-end road-monitoring pipeline** that drastically reduces manual inspection and accelerates road maintenance workflows for smart-city applications.
+The current prototype:
 
----
+- Uses **YOLOv8** to detect potholes in real-time  
+- Calculates approximate depth/severity (planned via **stereo/monocular depth**)  
+- Associates each detection with **GPS location metadata**  
+- Logs detections into a **FastAPI backend** for centralized reporting  
+- Stores structured detection data in **MongoDB** for analytics and future severity tracking  
 
-## 🚀 **Features (Planned + Implemented)**
-
-### ✅ **Implemented**
-- YOLO model trained for pothole detection  
-- Real-time detection on video input  
-- Extraction of bounding-box frames  
-- Coordinate logging + preliminary severity mapping  
-- FastAPI backend (initial version)  
-- MongoDB as the central datastore  
-- Video-based inference pipeline  
-
-### 🔜 **In Progress / Upcoming**
-- Stereo camera–based 3D depth estimation  
-- Severity classification (shallow / medium / deep)  
-- GPS automatic tagging from external module  
-- Auto-report generator (PDF + JSON)  
-- Web dashboard to visualize pothole map  
-- Integration with municipal reporting portal  
+This system is currently under development, with core detection functional and integration + automation underway.
 
 ---
 
-## 🧠 **Model Download (best.pt)**  
-Model weights are not uploaded to GitHub due to size limits.  
-Download the trained YOLO weight file here:  
+# 🔄 Planned Full Flow (Detailed)
 
-📌 **best.pt (YOLO Model):**  
-https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link  
+### **1. Video Capture**
+- A vehicle-mounted camera (or smartphone) records the road surface.
+- Frames are passed into the detection pipeline.
 
-Place it inside the `/model/` folder before running inference.
+### **2. Real-Time Pothole Detection (Completed)**
+- YOLOv8 model identifies pothole bounding boxes.
+- Model used: **best.pt**  
+  👉 Download: https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
 
----
+### **3. Depth & Severity Estimation (In Progress)**
+Two planned approaches:
+- **Stereo Vision Depth** (dual-camera setup)
+- **Monocular Depth Estimation** (MiDaS / DPT models)
 
-## 🔄 **Planned System Flow (Full Deep Breakdown)**
+Severity categories:
+- Minor: < 3 cm  
+- Moderate: 3–7 cm  
+- Critical: > 7 cm  
 
-### **1️⃣ Video Capture / Camera Feed (Real-time or Offline)**  
-PotBot accepts:  
-- Real-time camera stream from a vehicle  
-- Drone-mounted camera  
-- Pre-recorded dashcam footage  
+### **4. GPS Coordinate Tagging (Planned)**
+- GPS module or smartphone GPS logs coordinates
+- Each detection is associated with a latitude/longitude pair
 
-Frames are extracted at a fixed interval (≈ 15–30 FPS).
+### **5. Cloud Upload (Planned)**
+- FastAPI receives JSON reports:
+  ```
+  {
+    "image_id": ...,
+    "gps": { "lat": ..., "lng": ... },
+    "severity": ...,
+    "confidence": ...,
+    "timestamp": ...
+  }
+  ```
+- Stored in MongoDB for analysis
 
----
-
-### **2️⃣ YOLO Detection Stage**  
-Each frame is passed to a **YOLO model** specialized for pothole detection.  
-Output includes:  
-- Bounding box  
-- Confidence score  
-- Class label (“pothole”)  
-
-This stage identifies *where* the pothole is in the frame.
-
----
-
-### **3️⃣ Stereo-Depth Estimation (Planned)**  
-Using a stereo camera pair, disparity maps will be generated.  
-This gives:  
-- Depth of pothole  
-- Approx. volume  
-- Severity class  
-- Surface deviation map  
-
-Depth calculation pipeline:  
-`Disparity Map → Depth Calculation → Severity Classification`
+### **6. Reporting Dashboard (Planned)**
+- A map showing all potholes detected  
+- Severity color-coding  
+- Auto-generated reports for municipal authorities  
 
 ---
 
-### **4️⃣ GPS Mapping (Planned)**  
-A GPS module will capture:  
-- Latitude  
-- Longitude  
-- Timestamp  
+# 🛠 Planned Hardware Stack
 
-This links each pothole to a **real-world road location**.
+| Component | Purpose |
+|----------|---------|
+| **Raspberry Pi 4 / Jetson Nano** | Edge inference running YOLO |
+| **Dual Camera Setup / Pi Cameras** | Stereo depth estimation |
+| **GPS module (NEO-6M)** | Coordinate tagging |
+| **Power Bank / Vehicle Power** | Field deployment |
+| **Optional: IMU sensor** | Slope compensation |
 
----
-
-### **5️⃣ FastAPI Backend → MongoDB**  
-All detection events are stored in MongoDB using a FastAPI service:  
-- Image snapshot  
-- Confidence  
-- Severity rating  
-- Geo-coordinates  
-- Time of detection  
-
-This creates a permanent searchable database.
+The final goal is a **portable AI-powered pothole inspection unit** that can be mounted on:
+- Bikes  
+- Cars  
+- Drones (future extension)  
 
 ---
 
-### **6️⃣ Auto-Generated Pothole Report (Planned)**  
-For municipal use, PotBot will generate:  
-- Excel / JSON data tables  
-- Severity distribution  
-- Geo-pin map  
-- Pothole IDs  
-- Before–after repair tracking (future enhancement)
-
-Reports will be exportable as:  
-- PDF  
-- JSON  
-- CSV  
+# 🎯 Current Status
+🟢 YOLO model trained  
+🟢 Prototype video output generated  
+🟡 Depth estimation in progress  
+🟡 GPS tagging integration pending  
+🔴 Full reporting dashboard in planning  
 
 ---
 
-### **7️⃣ Smart Dashboard (Planned)**  
-A future web dashboard will show:  
-- Map with all detected potholes  
-- Severity color codes  
-- Timeline of detections  
-- Map layers (heatmaps, clustering)  
-- Playback of detection footage  
+# 📥 Model Download
+YOLO model (`best.pt`):  
+https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
 
 ---
-
-## 🧪 **Tech Stack**
-
-### **AI & Computer Vision**
-- YOLOv8  
-- OpenCV  
-- NumPy  
-
-### **Backend**
-- FastAPI  
-- Python  
-- MongoDB  
-
-### **Planned Hardware**
-- Raspberry Pi 4 or Jetson Nano  
-- Stereo Camera (OV9281 / ZED Mini / Intel RealSense)  
-- USB GPS module (NEO-6M)  
-- Power bank + vehicle mount  
-- 128GB storage  
-
----
-
-## ▶️ **Running PotBot (Current Version)**
-
-```
-python detect.py --weights model/best.pt --source path/to/video.mp4
-```
-
----
-
-## ⭐ **Status**
-🚧 **Ongoing development**  
-More features being added every week.
-
----
-
-## 🤝 Contributing  
-Pull requests and suggestions for improvement are welcome!
 
