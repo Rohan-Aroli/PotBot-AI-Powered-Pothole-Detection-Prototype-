@@ -16,7 +16,7 @@ Below is the complete end-to-end pipeline showing how detection, depth estimatio
 
 A sample detection video from the current prototype stage:
 
-https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/pothole_output_simple.mp4
+[https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/pothole_output_simple.mp4](https://youtu.be/8_DhqtXMx0E)
 
 ---
 
