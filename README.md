@@ -11,15 +11,6 @@ Below is the high-level architecture showing the complete data pipeline — from
 
 ---
 
-## 🎥 Demo Video
-
-**YouTube (Recommended):**  
-▶ https://youtu.be/8_DhqtXMx0E  
-
-Demonstrates detection pipeline, bounding boxes, and the early-stage prototype workflow.
-
----
-
 ## 📹 Best.pt (model) output on a sample pothole video:  
 
 [![PotBot Demo](https://img.youtube.com/vi/8_DhqtXMx0E/maxresdefault.jpg)](https://youtu.be/8_DhqtXMx0E)
