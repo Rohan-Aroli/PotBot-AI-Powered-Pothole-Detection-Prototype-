@@ -1,115 +1,138 @@
-# 🚧 PotBot – AI-Powered Pothole Detection Prototype (Ongoing)
-
-PotBot is an ongoing computer vision system designed to detect and analyze road potholes using **YOLO-based object detection**, **stereo vision depth estimation**, and **GPS-based geolocation tagging**. The long-term goal is to build a fully autonomous road-inspection device capable of mapping, reporting, and prioritizing pothole repair tasks for municipal authorities.
-
----
-
-# 🧩 Project Architecture Overview
-
-Below is the complete end-to-end pipeline showing how detection, depth estimation, GPS tagging, and reporting integrate into a single automated system:
-
-![PotBot Architecture](https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/499813903-aa52fecf-c6e4-49fd-a77f-b189e25e06dd.png?raw=true)
+# 🚧 PotBot – AI-Powered Pothole Detection Prototype
+*A stereo-vision + YOLO based pothole detection system with GPS logging and automated reporting.*
 
 ---
 
-# 🎥 Demo Output (Reference Video)
+## 🧠 Project Architecture Overview
 
-A sample detection video from the current prototype stage:
+Below is the high-level architecture showing the complete data pipeline — from video capture → stereo depth estimation → YOLO inference → severity classification → GPS tagging → backend logging:
 
-[https://github.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/blob/main/assets/pothole_output_simple.mp4](https://youtu.be/8_DhqtXMx0E)
-
----
-
-# 🧠 Project Description (Ongoing Work)
-
-PotBot aims to build an **AI-driven road monitoring system** capable of automatically detecting potholes, estimating their severity through geometric depth analysis, and tagging their exact GPS coordinates for municipal reporting.
-
-The current prototype:
-
-- Uses **YOLOv8** to detect potholes in real-time  
-- Calculates approximate depth/severity (planned via **stereo/monocular depth**)  
-- Associates each detection with **GPS location metadata**  
-- Logs detections into a **FastAPI backend** for centralized reporting  
-- Stores structured detection data in **MongoDB** for analytics and future severity tracking  
-
-This system is currently under development, with core detection functional and integration + automation underway.
+![Architecture](https://raw.githubusercontent.com/Rohan-Aroli/PotBot-AI-Powered-Pothole-Detection-Prototype-/main/assets/499813903-aa52fecf-c6e4-49fd-a77f-b189e25e06dd.png)
 
 ---
 
-# 🔄 Planned Full Flow (Detailed)
+## 🎥 Demo Video
 
-### **1. Video Capture**
-- A vehicle-mounted camera (or smartphone) records the road surface.
-- Frames are passed into the detection pipeline.
+**YouTube (Recommended):**  
+▶ https://youtu.be/8_DhqtXMx0E  
 
-### **2. Real-Time Pothole Detection (Completed)**
-- YOLOv8 model identifies pothole bounding boxes.
-- Model used: **best.pt**  
-  👉 Download: https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
-
-### **3. Depth & Severity Estimation (In Progress)**
-Two planned approaches:
-- **Stereo Vision Depth** (dual-camera setup)
-- **Monocular Depth Estimation** (MiDaS / DPT models)
-
-Severity categories:
-- Minor: < 3 cm  
-- Moderate: 3–7 cm  
-- Critical: > 7 cm  
-
-### **4. GPS Coordinate Tagging (Planned)**
-- GPS module or smartphone GPS logs coordinates
-- Each detection is associated with a latitude/longitude pair
-
-### **5. Cloud Upload (Planned)**
-- FastAPI receives JSON reports:
-  ```
-  {
-    "image_id": ...,
-    "gps": { "lat": ..., "lng": ... },
-    "severity": ...,
-    "confidence": ...,
-    "timestamp": ...
-  }
-  ```
-- Stored in MongoDB for analysis
-
-### **6. Reporting Dashboard (Planned)**
-- A map showing all potholes detected  
-- Severity color-coding  
-- Auto-generated reports for municipal authorities  
+Demonstrates detection pipeline, bounding boxes, and the early-stage prototype workflow.
 
 ---
 
-# 🛠 Planned Hardware Stack
+## 📹 Best.pt (model) output on a sample pothole video:  
+
+[![PotBot Demo](https://img.youtube.com/vi/8_DhqtXMx0E/maxresdefault.jpg)](https://youtu.be/8_DhqtXMx0E)
+
+
+---
+
+## 🧩 Model Weights (YOLO)
+
+Trained YOLO model (`best.pt`) is hosted externally due to GitHub size limits:
+
+📦 Download best.pt – YOLO Weights  
+https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
+
+---
+
+## 🚀 Project Description
+
+PotBot is an **ongoing AI-based pothole detection and reporting system** designed to automate the identification of road damage using real-time computer vision. It leverages:
+
+- **YOLO object detection** for identifying potholes  
+- **Stereo-vision depth estimation** to calculate severity (depth & contour)  
+- **GPS mapping** to accurately localize each pothole  
+- **FastAPI backend** for structured reporting  
+- **MongoDB database** for storing detection logs  
+
+The prototype aims to **reduce manual road inspection**, improve municipal response time, and provide a scalable, automated road-health monitoring solution.
+
+---
+
+## 🔄 Planned Full System Flow (End-to-End)
+
+### **1. Video Input Layer**
+- Dual-camera setup (dashcam + stereo camera)
+- Continuous road footage streamed to onboard processor
+- Frame synchronization for stereo depth
+
+### **2. Pre-Processing**
+- Frame resizing, denoising  
+- Stereo disparity computation → depth map creation  
+- Temporal smoothing to reduce false positives  
+
+### **3. YOLO-Based Detection**
+- YOLO model identifies pothole region (bounding box + confidence)
+- Non-max suppression to remove duplicates
+
+### **4. Depth & Severity Estimation**
+Severity = f(depth, area, contour sharpness)
+
+- Depth via stereo disparity  
+- Area via pixel-spread inside the bounding box  
+- Severity categories (tentative):  
+  - **Low**: <2 cm  
+  - **Medium**: 2–5 cm  
+  - **High**: >5 cm  
+
+### **5. GPS Integration**
+- Each detection is geotagged  
+- Route-level aggregation for municipal use  
+- Clustering of repeated potholes (future feature)
+
+### **6. Backend Logging (FastAPI)**
+- REST endpoints for:  
+  - `/upload_detection`
+  - `/get_report`
+- Auto-generation of incident packets
+
+### **7. Database Layer (MongoDB)**
+Stores:
+- Coordinates  
+- Severity  
+- Timestamp  
+- Image/frame sample  
+- Road segment ID  
+
+### **8. Web Dashboard (Planned)**
+- Map visualization  
+- Severity heatmaps  
+- Route-wise damage index  
+- Downloadable CSV/PDF reports
+
+---
+
+## 🔧 Planned Hardware Specification
 
 | Component | Purpose |
 |----------|---------|
-| **Raspberry Pi 4 / Jetson Nano** | Edge inference running YOLO |
-| **Dual Camera Setup / Pi Cameras** | Stereo depth estimation |
-| **GPS module (NEO-6M)** | Coordinate tagging |
-| **Power Bank / Vehicle Power** | Field deployment |
-| **Optional: IMU sensor** | Slope compensation |
+| **Stereo Camera (e.g., Intel RealSense / Zed Mini)** | Depth estimation & accurate severity measurement |
+| **Dashcam (1080p/60fps)** | Wide-FOV visual input for YOLO detection |
+| **Raspberry Pi 4 / Jetson Nano** | On-edge inference processing |
+| **GPS Module (NEO-6M)** | Real-time geolocation tagging |
+| **Power Bank / Vehicle Power Tap** | Continuous power supply |
+| **Vibration-damped Mount** | Stable recording during motion |
 
-The final goal is a **portable AI-powered pothole inspection unit** that can be mounted on:
-- Bikes  
-- Cars  
-- Drones (future extension)  
+**Note:** Stereo + dashcam combination is intentional — stereo provides depth accuracy, while dashcam provides high-quality RGB footage for YOLO inference.
 
 ---
 
-# 🎯 Current Status
-🟢 YOLO model trained  
-🟢 Prototype video output generated  
-🟡 Depth estimation in progress  
-🟡 GPS tagging integration pending  
-🔴 Full reporting dashboard in planning  
+## 🛠 Tech Stack
+
+- **YOLO (Ultralytics)** – Object detection  
+- **Stereo Vision / Disparity Mapping**  
+- **OpenCV** – Image processing  
+- **FastAPI** – Backend API  
+- **MongoDB** – Detection logs  
+- **Python** – Core logic  
+- **Numpy / Pandas** – Pre-processing  
 
 ---
 
-# 📥 Model Download
-YOLO model (`best.pt`):  
-https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
+## 📌 Status  
+🔧 **Work in Progress**  
+The prototype demonstrates detection, but full integration (GPS, backend, stereo depth) is in active development.
 
 ---
 
