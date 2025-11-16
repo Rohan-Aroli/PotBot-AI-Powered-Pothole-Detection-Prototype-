@@ -16,6 +16,8 @@ Below is the high-level architecture showing the complete data pipeline — from
 [![PotBot Demo](https://img.youtube.com/vi/8_DhqtXMx0E/maxresdefault.jpg)](https://youtu.be/8_DhqtXMx0E)
 
 
+
+
 ---
 
 ## 🧩 Model Weights (YOLO)
