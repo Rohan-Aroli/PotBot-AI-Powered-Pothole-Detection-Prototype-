@@ -25,7 +25,7 @@ Below is the high-level architecture showing the complete data pipeline — from
 Trained YOLO model (`best.pt`) is hosted externally due to GitHub size limits:
 
 📦 Download best.pt – YOLO Weights  
-https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link
+[https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=drive_link](https://drive.google.com/file/d/1xzJNxZOIdpdozWMr9Vlb8x0blWOijdl-/view?usp=sharing)
 
 ---
 
